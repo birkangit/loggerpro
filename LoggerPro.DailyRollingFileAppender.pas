@@ -227,7 +227,6 @@ end;
 procedure TLoggerProDailyRollingFileAppender.WriteLog(const aLogItem: TLogItem);
 var
   lWriter: TDateWriter;
-  lLogFileName: string;
   previousDateStr: string;
 begin
   if not FPreviousDateStrings.TryGetValue(aLogItem.LogTag, previousDateStr) then
