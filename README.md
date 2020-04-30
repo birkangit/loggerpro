@@ -12,7 +12,28 @@ LoggerPro is compatibile with
 - Delphi XE8
 - Delphi 10 Seattle
 - Delphi 10.1 Berlin
-- Delphi 10.2 Tokyo (Linux compatibility)
+- Delphi 10.2 Tokyo (Added Linux compatibility)
+- Delphi 10.3 Rio
+
+## What's new in 1.3.2
+- Added support for Android API level 26 in mobile demo
+- Added packages for Delphi 10.3 Rio, Delphi 10.2 Tokyo, Delphi 10.1 Berlin and Delphi 10.0 Seattle.
+- Added packages for Delphi XE7 and Delphi XE8 (these packages do not contain appenders which uses `System.Net.HttpClient`)
+- Added support for Linux in `TLoggerProFileAppender` (Thank you [charoit](https://github.com/charoit))
+
+## What's new in 1.3.0
+- Replace `TThreadedList<T>` with a custom implementation (`TThreadSafeQueue<T>`) because of a [bug](https://forums.embarcadero.com/thread.jspa?messageID=941762) and [this](https://quality.embarcadero.com/browse/RSP-19993) in `TMonitor`.
+  - `TThreadSafeQueue<T>` is not a drop-in replacement for the `TThreadedQueue<T>` but can be used in other projects if you are fighting with the same bug.
+- `TVCLMemoLogAppender.Create` gots new parameter: `aClearOnStartup` which optionally clear the memo at the startup.
+- Improvement to the `TLoggerProConsoleAppender` (Thanks to [Fulgan](https://github.com/Fulgan))
+- Improvement to the `TLoggerProFileAppender`; now there is a `OnLogRow` callback that can be used to customize log row format.
+- New overloaded `Log` methods. The `*Fmt` versions are deprecated and will be removed in a future version [ISSUE #17](https://github.com/danieleteti/loggerpro/issues/17)
+- New [NSQ](https://nsq.io) appender (Thanks to [Fulgan](https://github.com/Fulgan))
+- New logger filter decorator (Thanks to [Fulgan](https://github.com/Fulgan))
+- New REST appender with support for extended information (samples for Windows and Android)
+  - Extended information are supported in Windows (fully) and Android (partially)  
+  - In the sample folder is provided also the `RESTLogCollector`
+- New [Elastic Search](https://www.elastic.co/products/elasticsearch) Log appender (Thanks to Salvatore Sparacino)
 
 
 ## Getting started
@@ -30,7 +51,7 @@ begin
     //the global logger uses a TLoggerProFileAppender, so your logs will be written on a 
     //set of files with automatic rolling/rotating
     
-    Log.Debug('Debug message', 'main'); //TLoggerProFileAppender uses the "tag" to select a different log file
+    Log.Debug('Debug message', 'main'); //TLoggerProFileAppender uses the "tag" to select a different log file	
     Log.Info('Info message', 'main');
     Log.Warn('Warning message', 'main');
     Log.Error('Error message', 'errors');
@@ -94,14 +115,16 @@ end.
 
 ## Built-in log appenders
 The framework contains the following built-in log appenders
-- File (`TLoggerProFileAppender`) (v1.0.x+)
-- Console (`TLoggerProConsoleAppender`) (v1.0.x+)
-- OutputDebugString (`TLoggerProOutputDebugStringAppender`) (v1.0.x+)
-- VCL Memo (`TVCLMemoLogAppender`) (v1.0.x+)
-- VCL ListView (`TVCLMemoLogAppender`) -- thanks to [https://github.com/he3p94uu](https://github.com/he3p94uu) (v1.3.x+)
-- Redis Appender with LogsViewer(to aggregate logs from different instances on a single Redis instance) (v1.2.x+)
-- Email Logger (to send email as log, very useful for fatal errors) (v1.2.x+)
-- SysLog Logger ([RFC 5424](https://tools.ietf.org/html/rfc5424) compliant) -- thanks to [https://github.com/nurettin](https://github.com/nurettin) (v1.3.x+)
+- File appender (`TLoggerProFileAppender`) (v1.0.0+)
+- Console appender (`TLoggerProConsoleAppender`) (v1.0.0+)
+- OutputDebugString appender (`TLoggerProOutputDebugStringAppender`) (v1.0.0+)
+- VCL Memo appender (`TVCLMemoLogAppender`) (v1.0.0+)
+- VCL ListView appender (`TVCLMemoLogAppender`) -- thanks to [https://github.com/he3p94uu](https://github.com/he3p94uu) (v1.3.0+)
+- Redis Appender with LogsViewer(to aggregate logs from different instances on a single Redis instance) (v1.2.0+)
+- Email appender (to send email as log, very useful for fatal errors) (v1.2.0+)
+- SysLog appender [RFC 5424](https://tools.ietf.org/html/rfc5424) compliant -- thanks to [https://github.com/nurettin](https://github.com/nurettin) (v1.3.0+)
+- [NSQ](https://nsq.io) appender (Thanks to [Fulgan](https://github.com/Fulgan)) (v1.3.0+)
+- Decorator appender (Thanks to [Fulgan](https://github.com/Fulgan)) (v1.3.0+)
 
 Next appenders in the development pipeline
 - RESTful Appender (to send logs to a rest endpoint using a specific request format, so that you can implement log server in DelphiMVCFramework, PHP, Java, Python, Node etc)
@@ -114,7 +137,7 @@ The log writers and all the appenders are asycnhronous.
 
 ## Documentation
 
-Documenation is available in the `docs` folder as HTML.
+Documentation is available in the `docs` folder as HTML.
 
 ## Other
 You can install [Delphinus package manager](https://github.com/Memnarch/Delphinus/wiki/Installing-Delphinus) and install LoggerPro as a package there. (Delphinus-Support)
